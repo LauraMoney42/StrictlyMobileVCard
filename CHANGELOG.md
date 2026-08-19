@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-08-19 13:04
+- Serve the vCard as a real static file (ryan-ross.vcf) instead of generating it in JavaScript
+- Add Contact is now a plain link to that file. Removed vCardData, downloadVCard, the Blob and the synthetic download click. The payment menu and rate limiter are untouched
+- Why: the vCard was embedded in index.html, so any phone holding a cached copy of the page kept producing the old photo-less vCard. GitHub Pages sends cache-control max-age=600 with no way to override it
+- Files affected: index.html, ryan-ross.vcf
+
 ## 2026-08-19 12:54
 - Fixed the contact photo not importing into iOS Contacts
 - Root cause 1: the vCard used LF line separators. RFC 2426 requires CRLF, and folded lines are unfolded by looking for CRLF followed by a space, so the folded PHOTO block was never reassembled
