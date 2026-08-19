@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-08-19 12:54
+- Fixed the contact photo not importing into iOS Contacts
+- Root cause 1: the vCard used LF line separators. RFC 2426 requires CRLF, and folded lines are unfolded by looking for CRLF followed by a space, so the folded PHOTO block was never reassembled
+- Root cause 2: the photo used ENCODING=BASE64 (vCard 2.1 syntax) rather than ENCODING=b (vCard 3.0)
+- Note: this was introduced when the 2.5MB single-line photo was folded in the previous change. Unfolded, the LF separators did not matter because no unfolding was needed
+- downloadVCard now normalizes the payload to CRLF before building the Blob
+- Files affected: index.html
+
 ## 2026-08-19 12:30
 - Fixed dead website URL in the vCard: `strictlymobilemassage.netlify.app` returned
   HTTP 404, changed to `https://strictlymobilemassage.com` (verified HTTP 200)
